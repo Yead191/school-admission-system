@@ -1,0 +1,14 @@
+using SchoolAdmission.Domain.Enums;
+
+namespace SchoolAdmission.Domain.Entities;
+
+public class ClassEntity
+{
+    public string Id { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public int TotalSeats { get; set; }
+    public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAtUtc { get; set; } = DateTime.UtcNow;
+
+    public ICollection<HoldEntity> Holds { get; set; } = new List<HoldEntity>();
+}
