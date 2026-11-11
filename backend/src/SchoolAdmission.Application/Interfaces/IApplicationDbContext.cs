@@ -13,3 +13,4 @@ public interface IApplicationDbContext
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
     Task LockClassForUpdateAsync(string classId, CancellationToken cancellationToken = default);
 }
+

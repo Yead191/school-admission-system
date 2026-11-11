@@ -128,3 +128,4 @@ public class LifecycleAndIdempotencyTests : IClassFixture<TestWebApplicationFact
         Assert.Equal(0, classState2?.HeldSeats);
     }
 }
+

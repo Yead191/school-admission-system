@@ -29,9 +29,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
                 $"SELECT id FROM classes WHERE id = {classId} FOR UPDATE",
                 cancellationToken);
         }
-        else if (Database.IsSqlite())
+        else
         {
-            // SQLite locks entire DB per write transaction automatically
+            // In-memory or SQLite providers (used in test fixtures)
             await Task.CompletedTask;
         }
     }

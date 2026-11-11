@@ -84,3 +84,4 @@ public class ConcurrencySeatReservationTests : IClassFixture<TestWebApplicationF
         Assert.Equal(0, finalClassStatus.AvailableSeats);
     }
 }
+

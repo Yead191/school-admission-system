@@ -27,3 +27,4 @@ public static class StudentIdValidator
         return studentId.Length == 17 && studentId.All(char.IsDigit);
     }
 }
+

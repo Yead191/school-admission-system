@@ -19,8 +19,15 @@ public class AdmissionService : IAdmissionService
         _context = context;
 
         // Default 600 seconds as specified in rule 2.5
-        var envSeconds = configuration.GetValue<int?>("HOLD_DURATION_SECONDS");
-        _holdDurationSeconds = envSeconds is > 0 ? envSeconds.Value : 600;
+        var envSecondsStr = configuration["HOLD_DURATION_SECONDS"];
+        if (int.TryParse(envSecondsStr, out var parsed) && parsed > 0)
+        {
+            _holdDurationSeconds = parsed;
+        }
+        else
+        {
+            _holdDurationSeconds = 600;
+        }
     }
 
     public async Task<HoldCreatedResponse> CreateHoldAsync(string classId, string studentId, CancellationToken cancellationToken = default)

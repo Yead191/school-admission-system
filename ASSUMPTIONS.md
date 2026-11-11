@@ -45,3 +45,4 @@ This document clarifies design choices and assumptions made to satisfy and excee
 
 ## 6. Timezone Handling
 * All timestamps (`createdAt`, `expiresAt`, `confirmedAt`) are strictly stored and returned in **UTC (ISO 8601)** format (e.g., `2026-11-01T04:10:00Z`).
+

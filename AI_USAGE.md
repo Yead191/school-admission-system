@@ -17,3 +17,4 @@
 * **Issue 3 (Database Provider Differences in Tests):**
   * *AI Mistake:* Code originally referenced `Database.IsSqlite()` directly in Infrastructure, which is only present when the SQLite EF provider package is referenced.
   * *Correction:* Replaced with clean abstraction check handling PostgreSQL in production and non-PostgreSQL (SQLite / InMemory) gracefully for unit and integration test fixtures.
+

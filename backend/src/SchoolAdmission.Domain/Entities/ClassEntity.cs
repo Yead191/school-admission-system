@@ -12,3 +12,4 @@ public class ClassEntity
 
     public ICollection<HoldEntity> Holds { get; set; } = new List<HoldEntity>();
 }
+
