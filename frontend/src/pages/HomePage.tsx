@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
-import { Header } from '../components/common/Header';
-import { StudentIdBar } from '../components/common/StudentIdBar';
-import { ClassList } from '../components/classes/ClassList';
-import { MyHoldsList } from '../components/holds/MyHoldsList';
-import { CreateClassModal } from '../components/classes/CreateClassModal';
-import { HoldDetailModal } from '../components/holds/HoldDetailModal';
-import { Sparkles, ShieldCheck, Clock, CreditCard } from 'lucide-react';
+import React, { useState } from "react";
+import { Header } from "../components/common/Header";
+import { StudentIdBar } from "../components/common/StudentIdBar";
+import { ClassList } from "../components/classes/ClassList";
+import { MyHoldsList } from "../components/holds/MyHoldsList";
+import { CreateClassModal } from "../components/classes/CreateClassModal";
+import { HoldDetailModal } from "../components/holds/HoldDetailModal";
+import { Sparkles, ShieldCheck, Clock, CreditCard } from "lucide-react";
 
 export const HomePage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'classes' | 'my-holds'>('classes');
+  const [activeTab, setActiveTab] = useState<"classes" | "my-holds">("classes");
   const [isCreateClassOpen, setIsCreateClassOpen] = useState(false);
   const [activeHoldId, setActiveHoldId] = useState<string | null>(null);
 
   const focusStudentIdInput = () => {
-    const el = document.querySelector('input[inputmode="numeric"]') as HTMLInputElement | null;
+    const el = document.querySelector(
+      'input[inputmode="numeric"]',
+    ) as HTMLInputElement | null;
     if (el) {
       el.focus();
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   };
 
@@ -59,9 +61,12 @@ export const HomePage: React.FC = () => {
                 ১
               </div>
               <div className="text-xs">
-                <p className="font-bold text-slate-800">নিবন্ধন নম্বর নিশ্চিত করুন</p>
+                <p className="font-bold text-slate-800">
+                  নিবন্ধন নম্বর নিশ্চিত করুন
+                </p>
                 <p className="text-slate-500 mt-0.5 leading-relaxed">
-                  উপরের ঘরে ১৭ অঙ্কের জন্ম নিবন্ধন নম্বর দিন বা <strong>ডেমো ১, ২, ৩</strong> বাটন চাপুন।
+                  উপরের ঘরে ১৭ অঙ্কের জন্ম নিবন্ধন নম্বর দিন বা{" "}
+                  <strong>ডেমো ১, ২, ৩</strong> বাটন চাপুন।
                 </p>
               </div>
             </div>
@@ -72,10 +77,12 @@ export const HomePage: React.FC = () => {
               </div>
               <div className="text-xs">
                 <p className="font-bold text-slate-800 flex items-center gap-1.5">
-                  ক্লাসে আবেদন করুন <Clock className="w-3.5 h-3.5 text-amber-600" />
+                  ক্লাসে আবেদন করুন{" "}
+                  <Clock className="w-3.5 h-3.5 text-amber-600" />
                 </p>
                 <p className="text-slate-500 mt-0.5 leading-relaxed">
-                  পছন্দের ক্লাসের কার্ডে <strong>"আবেদন করুন"</strong> চাপুন। সিট ১০ মিনিটের জন্য আপনার নামে হোল্ড হবে।
+                  পছন্দের ক্লাসের কার্ডে <strong>"আবেদন করুন"</strong> চাপুন।
+                  সিট ১০ মিনিটের জন্য আপনার নামে হোল্ড হবে।
                 </p>
               </div>
             </div>
@@ -86,10 +93,12 @@ export const HomePage: React.FC = () => {
               </div>
               <div className="text-xs">
                 <p className="font-bold text-slate-800 flex items-center gap-1.5">
-                  ভর্তি ফি পরিশোধ করুন <CreditCard className="w-3.5 h-3.5 text-emerald-600" />
+                  ভর্তি ফি পরিশোধ করুন{" "}
+                  <CreditCard className="w-3.5 h-3.5 text-emerald-600" />
                 </p>
                 <p className="text-slate-500 mt-0.5 leading-relaxed">
-                  কাউন্টডাউন শেষ হওয়ার পূর্বে <strong>"ভর্তি ফি দিন"</strong> চাপুন। সিট স্থায়ীভাবে নিশ্চিত হবে।
+                  কাউন্টডাউন শেষ হওয়ার পূর্বে <strong>"ভর্তি ফি দিন"</strong>{" "}
+                  চাপুন। সিট স্থায়ীভাবে নিশ্চিত হবে।
                 </p>
               </div>
             </div>
@@ -97,13 +106,11 @@ export const HomePage: React.FC = () => {
         </div>
 
         {/* Tab View */}
-        {activeTab === 'classes' ? (
-          <ClassList
-            onViewMyHolds={() => setActiveTab('my-holds')}
-          />
+        {activeTab === "classes" ? (
+          <ClassList onViewMyHolds={() => setActiveTab("my-holds")} />
         ) : (
           <MyHoldsList
-            onGoToClasses={() => setActiveTab('classes')}
+            onGoToClasses={() => setActiveTab("classes")}
             onPromptStudentId={focusStudentIdInput}
           />
         )}
@@ -113,15 +120,6 @@ export const HomePage: React.FC = () => {
       <footer className="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p>© ২০২৬ Onnorokom Projukti Limited • School Admission System</p>
-          <div className="flex items-center gap-4 text-slate-400">
-            <span className="flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> High-Concurrency Architecture
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-600" /> React 18 + .NET 8
-            </span>
-          </div>
         </div>
       </footer>
 
@@ -129,7 +127,7 @@ export const HomePage: React.FC = () => {
       <CreateClassModal
         isOpen={isCreateClassOpen}
         onClose={() => setIsCreateClassOpen(false)}
-        onSuccess={() => setActiveTab('classes')}
+        onSuccess={() => setActiveTab("classes")}
       />
 
       {/* Hold Detail & Live Payment Modal */}
@@ -138,7 +136,7 @@ export const HomePage: React.FC = () => {
         onClose={() => setActiveHoldId(null)}
         onGoToMyHolds={() => {
           setActiveHoldId(null);
-          setActiveTab('my-holds');
+          setActiveTab("my-holds");
         }}
       />
     </div>
