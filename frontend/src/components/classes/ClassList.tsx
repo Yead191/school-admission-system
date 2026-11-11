@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { RefreshCw, Search, GraduationCap } from 'lucide-react';
 import { useGetClassesQuery } from '../../api/classesApi';
-import { useCreateHoldMutation } from '../../api/holdsApi';
 import { ClassCard } from './ClassCard';
 import { LoadingSpinner } from '../common/LoadingSpinner';
 import { ErrorMessage } from '../common/ErrorMessage';
 import { useAppSelector } from '../../store';
+import { AdmissionFlowModal } from '../holds/AdmissionFlowModal';
+import type { ClassItem } from '../../types/admission';
 
 interface ClassListProps {
-  onHoldSuccess: (holdId: string) => void;
-  onPromptStudentId: () => void;
+  onViewMyHolds: () => void;
 }
 
 export const ClassList: React.FC<ClassListProps> = ({
-  onHoldSuccess,
-  onPromptStudentId,
+  onViewMyHolds,
 }) => {
   // Polling every 3000ms (3 seconds) fulfills Rule 10:
   // "Class-এর seat সংখ্যা page reload ছাড়াই কয়েক সেকেন্ড পরপর হালনাগাদ হবে।"
@@ -23,23 +22,14 @@ export const ClassList: React.FC<ClassListProps> = ({
     { pollingInterval: 3000 }
   );
 
-  const [createHold, { isLoading: isHolding }] = useCreateHoldMutation();
   const { isValidStudentId } = useAppSelector((state) => state.auth);
-
-  const [applyingClassId, setApplyingClassId] = useState<string | null>(null);
-  const [applyError, setApplyError] = useState<unknown | null>(null);
+  const [selectedClassForFlow, setSelectedClassForFlow] = useState<ClassItem | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleApply = async (classId: string) => {
-    try {
-      setApplyingClassId(classId);
-      setApplyError(null);
-      const result = await createHold(classId).unwrap();
-      onHoldSuccess(result.holdId);
-    } catch (err) {
-      setApplyError(err);
-    } finally {
-      setApplyingClassId(null);
+  const handleOpenFlow = (classId: string) => {
+    const found = classes?.find((c) => c.id === classId);
+    if (found) {
+      setSelectedClassForFlow(found);
     }
   };
 
@@ -82,15 +72,6 @@ export const ClassList: React.FC<ClassListProps> = ({
         </div>
       </div>
 
-      {/* Action / Apply Error Banner */}
-      {applyError ? (
-        <ErrorMessage
-          error={applyError}
-          onDismiss={() => setApplyError(null)}
-          className="animate-in fade-in slide-in-from-top-2 duration-200"
-        />
-      ) : null}
-
       {/* Main Content */}
       {isLoading ? (
         <LoadingSpinner message="ক্লাসের তালিকা লোড হচ্ছে..." />
@@ -112,14 +93,25 @@ export const ClassList: React.FC<ClassListProps> = ({
             <ClassCard
               key={item.id}
               classItem={item}
-              onApply={handleApply}
-              isApplying={isHolding && applyingClassId === item.id}
+              onApply={() => handleOpenFlow(item.id)}
+              isApplying={false}
               isValidStudentId={isValidStudentId}
-              onPromptStudentId={onPromptStudentId}
+              onPromptStudentId={() => handleOpenFlow(item.id)}
             />
           ))}
         </div>
       )}
+
+      {/* Guided Admission Flow Modal */}
+      <AdmissionFlowModal
+        isOpen={Boolean(selectedClassForFlow)}
+        onClose={() => setSelectedClassForFlow(null)}
+        selectedClass={selectedClassForFlow}
+        onViewMyHolds={() => {
+          setSelectedClassForFlow(null);
+          onViewMyHolds();
+        }}
+      />
     </div>
   );
 };
