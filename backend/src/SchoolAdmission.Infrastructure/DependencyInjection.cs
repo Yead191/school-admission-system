@@ -14,16 +14,27 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? "Host=postgres;Port=5432;Database=school_admission;Username=postgres;Password=postgres";
 
+        var isSqlite = connectionString.Contains(".db", StringComparison.OrdinalIgnoreCase) ||
+                       connectionString.StartsWith("Data Source=", StringComparison.OrdinalIgnoreCase) ||
+                       string.Equals(configuration["DB_PROVIDER"], "sqlite", StringComparison.OrdinalIgnoreCase);
+
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseNpgsql(connectionString, npgsqlOptions =>
+            if (isSqlite)
             {
-                npgsqlOptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
-                npgsqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(5),
-                    errorCodesToAdd: null);
-            });
+                options.UseSqlite(connectionString);
+            }
+            else
+            {
+                options.UseNpgsql(connectionString, npgsqlOptions =>
+                {
+                    npgsqlOptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
+                    npgsqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(5),
+                        errorCodesToAdd: null);
+                });
+            }
         });
 
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
@@ -34,4 +45,3 @@ public static class DependencyInjection
         return services;
     }
 }
-
