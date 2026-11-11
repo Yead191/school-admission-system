@@ -63,3 +63,4 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'md' })
       return null;
   }
 };
+

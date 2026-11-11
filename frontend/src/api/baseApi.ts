@@ -23,3 +23,4 @@ export const baseApi = createApi({
   tagTypes: ['Class', 'Hold', 'MyHolds'],
   endpoints: () => ({}),
 });
+

@@ -40,3 +40,4 @@ describe('CountdownTimer Component', () => {
     expect(onExpireMock).toHaveBeenCalled();
   });
 });
+

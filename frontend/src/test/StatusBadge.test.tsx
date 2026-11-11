@@ -23,3 +23,4 @@ describe('StatusBadge Component', () => {
     expect(screen.getByText(/বাতিল/i)).toBeInTheDocument();
   });
 });
+

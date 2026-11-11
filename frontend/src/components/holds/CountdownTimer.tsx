@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Timer, AlertCircle } from 'lucide-react';
 
 interface CountdownTimerProps {
@@ -12,20 +12,18 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   onExpire,
   size = 'md',
 }) => {
-  const calculateRemaining = () => {
+  const calculateRemaining = useCallback(() => {
     const expireTime = new Date(expiresAt).getTime();
     const now = Date.now();
     return Math.max(0, Math.floor((expireTime - now) / 1000));
-  };
+  }, [expiresAt]);
 
   const [remainingSeconds, setRemainingSeconds] = useState(calculateRemaining);
 
   useEffect(() => {
-    // Initial check
     const current = calculateRemaining();
-    setRemainingSeconds(current);
-    if (current <= 0 && onExpire) {
-      onExpire();
+    if (current <= 0) {
+      onExpire?.();
       return;
     }
 
@@ -35,14 +33,12 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
       if (remaining <= 0) {
         clearInterval(interval);
-        if (onExpire) {
-          onExpire();
-        }
+        onExpire?.();
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [expiresAt, onExpire]);
+  }, [calculateRemaining, onExpire]);
 
   if (remainingSeconds <= 0) {
     return (

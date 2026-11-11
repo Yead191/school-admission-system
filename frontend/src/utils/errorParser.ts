@@ -94,3 +94,4 @@ export function parseApiError(error: unknown): ParsedError {
     status,
   };
 }
+

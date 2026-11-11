@@ -23,10 +23,9 @@ export const HoldCard: React.FC<HoldCardProps> = ({
   expiresAt,
 }) => {
   // Local state to instantly handle client-side expiration without page reload (Rule 9)
-  const isPastExpiry = new Date(expiresAt).getTime() <= Date.now();
-  const [isLocallyExpired, setIsLocallyExpired] = useState(
-    initialStatus === 'HELD' && isPastExpiry
-  );
+  const [isLocallyExpired, setIsLocallyExpired] = useState(() => {
+    return initialStatus === 'HELD' && new Date(expiresAt).getTime() <= Date.now();
+  });
 
   const [confirmHold, { isLoading: isConfirming }] = useConfirmHoldMutation();
   const [cancelHold, { isLoading: isCancelling }] = useCancelHoldMutation();
